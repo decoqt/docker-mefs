@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-LABEL yydfjt <yydfjt@hotmail.com>
+LABEL maintainer yydfjt <yydfjt@hotmail.com>
 
 # Add Tini
 
@@ -8,7 +8,6 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 
 # install dependence
-
 RUN apt-get update  \
     && apt-get install -y -f apt-utils wget git gcc cmake libgmp-dev libssl-dev build-essential flex bison   \
     && rm -rf /var/lib/apt/lists/*    \
@@ -21,7 +20,6 @@ RUN apt-get update  \
     && make  \
     && make install  \
     && ldconfig  \
-
     ## get mefs binary
     && wget -P /usr/local/bin/ http://212.64.28.207:4000/mefs    \
     && chmod 777 /usr/local/bin/mefs
