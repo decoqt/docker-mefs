@@ -1,6 +1,5 @@
 FROM ubuntu:18.04
-
-MAINTAINER yydfjt <yydfjt@hotmail.com>
+LABEL yydfjt <yydfjt@hotmail.com>
 
 # Add Tini
 
