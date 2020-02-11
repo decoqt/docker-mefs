@@ -57,7 +57,9 @@ ROCKSDB_MINOR_VER=4
 ROCKSDB_PATCH_VER=6
 ROCKSDB_VER ?= $(ROCKSDB_MAJOR_VER).$(ROCKSDB_MINOR_VER).$(ROCKSDB_PATCH_VER)
 
-RDBTMPDIR=$(PKGROOT)/rocksdb/build
+RDBDIR=$(PKGROOT)/rocksdb
+RDBTMPDIR=$(RDBDIR)/build
+
 RDBURL=https://github.com/facebook/rocksdb/archive/v$(ROCKSDB_VER).tar.gz
 build-rocksdb: get-rocksdb make-rocksdb
 build-rocksdb-static: get-rocksdb make-rocksdb-static
@@ -65,10 +67,16 @@ build-original-rocksdb : get-rocksdb make-rocksdb
 get-rocksdb:
 		@{ \
 				set -e; \
+				ifneq ($(RDBDIR), $(wildcard $(RDBDIR)));\
+					mkdir -p $(RDBDIR); \
+				endif; \
+
+				ifneq ($(RDBDIR)/v$(ROCKSDB_VER).tar.gz, $(RDBDIR)/v$(ROCKSDB_VER).tar.gz) ;\
+					wget $(RDBURL) -P $(RDBTMPDIR); \
+				endif; \
+
 				rm -rf $(RDBTMPDIR); \
-				mkdir -p $(RDBTMPDIR); \
-				wget $(RDBURL) -P $(RDBTMPDIR); \
-				tar xzvf $(RDBTMPDIR)/v$(ROCKSDB_VER).tar.gz -C $(RDBTMPDIR); \
+				tar xzvf $(RDBDIR)/v$(ROCKSDB_VER).tar.gz -C $(RDBTMPDIR); \
 		}
 make-rocksdb:
 		@EXTRA_CXXFLAGS=-DROCKSDB_NO_DYNAMIC_EXTENSION make -C $(RDBTMPDIR)/rocksdb-$(ROCKSDB_VER) -j8 shared_lib
@@ -83,7 +91,7 @@ ldconfig-rocksdb-lib-ull:
 						then echo '/usr/local/lib' >> $(LIBCONF_PATH); \
 						fi"; \
 				sudo ldconfig; \
-  fi
+		fi
 install-rocksdb-lib-ull:
 		@{ \
 				set -e; \
@@ -114,21 +122,24 @@ install-original-rocksdb: build-original-rocksdb do-install-rocksdb
 # download and install mcl
 ###############################################################################
 
-MCLTMPDIR=$(PKGROOT)
+MCLDIR=$(PKGROOT)/mcl
+MCLTMPDIR=$(PKGROOT)/mcl/build
 
 build-mcl: get-mcl make-mcl
 get-mcl:
 		@{ \
 				set -e; \
-				rm -rf $(MCLTMPDIR); \
-				mkdir -p $(MCLTMPDIR); \
-				cd $(MCLTMPDIR); \
-				git clone https://github.com/herumi/mcl.git; \
+				ifneq ($(MCLDIR), $(MCLDIR))
+					git clone https://github.com/herumi/mcl.git; \
+				endif
 		}
 make-mcl:
 		@{ \
 				set -e; \
-				cd $(MCLTMPDIR)/mcl; \
+				ifneq ($(MCLTMPDIR), $(MCLTMPDIR)) \
+					mkdir -p $(MCLTMPDIR); \
+				endif \
+				cd $(MCLTMPDIR); \
 				mkdir build;  \
 				cd build;  \
 				cmake ..;  \
@@ -137,7 +148,7 @@ make-mcl:
 do-install-mcl-ull:
 		@{ \
 				set -e; \
-				cd $(MCLTMPDIR)/mcl/build; \
+				cd $(MCLTMPDIR); \
 				make install; \
 				ldconfig;  \
 		}
