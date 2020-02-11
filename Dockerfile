@@ -4,9 +4,9 @@ LABEL maintainer yydfjt <yydfjt@hotmail.com>
 # install dependence
 RUN apt-get update  \
     && apt-get install -y -f apt-utils wget git gcc cmake libgmp-dev libssl-dev build-essential flex bison libsnappy-dev zlib1g-dev libbz2-dev liblz4-dev libzstd-dev  \
-    # install mcl rocksdb
-    && git clone https://github.com/yydfjt/docker-mefs-env.git  \ 
-    && cd docker-mefs-env   \
+    # install mcl rocksdb lib
+    && git clone https://github.com/yydfjt/docker-mefs.git  \ 
+    && cd docker-mefs   \
     && make \
     ## get mefs binary
     && wget -P /usr/local/bin/ http://212.64.28.207:4000/mefs    \
