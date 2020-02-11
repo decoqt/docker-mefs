@@ -74,6 +74,7 @@ get-rocksdb:
 					then wget $(RDBURL) -P $(RDBDIR); \
 				fi; \
 				rm -rf $(RDBTMPDIR); \
+				mkdir -p $(RDBTMPDIR); \
 				tar xzvf $(RDBDIR)/v$(ROCKSDB_VER).tar.gz -C $(RDBTMPDIR); \
 		}
 make-rocksdb:
