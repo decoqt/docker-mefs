@@ -63,45 +63,45 @@ build-rocksdb: get-rocksdb make-rocksdb
 build-rocksdb-static: get-rocksdb make-rocksdb-static
 build-original-rocksdb : get-rocksdb make-rocksdb
 get-rocksdb:
-        @{ \
-                set -e; \
-                rm -rf $(RDBTMPDIR); \
-                mkdir -p $(RDBTMPDIR); \
-                wget $(RDBURL) -P $(RDBTMPDIR); \
-                tar xzvf $(RDBTMPDIR)/v$(ROCKSDB_VER).tar.gz -C $(RDBTMPDIR); \
-        }
+		@{ \
+				set -e; \
+				rm -rf $(RDBTMPDIR); \
+				mkdir -p $(RDBTMPDIR); \
+				wget $(RDBURL) -P $(RDBTMPDIR); \
+				tar xzvf $(RDBTMPDIR)/v$(ROCKSDB_VER).tar.gz -C $(RDBTMPDIR); \
+		}
 make-rocksdb:
-        @EXTRA_CXXFLAGS=-DROCKSDB_NO_DYNAMIC_EXTENSION make -C $(RDBTMPDIR)/rocksdb-$(ROCKSDB_VER) -j8 shared_lib
+		@EXTRA_CXXFLAGS=-DROCKSDB_NO_DYNAMIC_EXTENSION make -C $(RDBTMPDIR)/rocksdb-$(ROCKSDB_VER) -j8 shared_lib
 make-rocksdb-static:
-        @EXTRA_CXXFLAGS=-DROCKSDB_NO_DYNAMIC_EXTENSION make -C $(RDBTMPDIR)/rocksdb-$(ROCKSDB_VER) -j8 static_lib
+		@EXTRA_CXXFLAGS=-DROCKSDB_NO_DYNAMIC_EXTENSION make -C $(RDBTMPDIR)/rocksdb-$(ROCKSDB_VER) -j8 static_lib
 ldconfig-rocksdb-lib-ull:
-        if [ $(OS) = Linux ]; then \
-                sudo sh -c "if [ ! -f $(LIBCONF_PATH) ]; \
-                        then touch $(LIBCONF_PATH); \
-                        fi"; \
-                sudo sh -c "if ! egrep -q '/usr/local/lib' $(LIBCONF_PATH); \
-                        then echo '/usr/local/lib' >> $(LIBCONF_PATH); \
-                        fi"; \
-                sudo ldconfig; \
+		if [ $(OS) = Linux ]; then \
+				sudo sh -c "if [ ! -f $(LIBCONF_PATH) ]; \
+						then touch $(LIBCONF_PATH); \
+						fi"; \
+				sudo sh -c "if ! egrep -q '/usr/local/lib' $(LIBCONF_PATH); \
+						then echo '/usr/local/lib' >> $(LIBCONF_PATH); \
+						fi"; \
+				sudo ldconfig; \
   fi
 install-rocksdb-lib-ull:
-        @{ \
-                set -e; \
-                sudo INSTALL_PATH=/usr/local make -C \
-                        $(RDBTMPDIR)/rocksdb-$(ROCKSDB_VER) install-shared; \
-                rm -rf $(RDBTMPDIR); \
-        }
+		@{ \
+				set -e; \
+				sudo INSTALL_PATH=/usr/local make -C \
+						$(RDBTMPDIR)/rocksdb-$(ROCKSDB_VER) install-shared; \
+				rm -rf $(RDBTMPDIR); \
+		}
 install-rocksdb-lib-ull-static:
-        @{ \
-    set -e; \
-    sudo INSTALL_PATH=/usr/local make -C \
-      $(RDBTMPDIR)/rocksdb-$(ROCKSDB_VER) install-static; \
-    rm -rf $(RDBTMPDIR); \
-  }
+		@{ \
+				set -e; \
+				sudo INSTALL_PATH=/usr/local make -C \
+				$(RDBTMPDIR)/rocksdb-$(ROCKSDB_VER) install-static; \
+				rm -rf $(RDBTMPDIR); \
+  		}
 do-install-rocksdb-ull: install-rocksdb-lib-ull ldconfig-rocksdb-lib-ull
 do-install-rocksdb:
-        @(INSTALL_PATH=$(PKGROOT)/build make -C \
-                $(RDBTMPDIR)/rocksdb-$(ROCKSDB_VER) install-shared && rm -rf $(RDBTMPDIR))
+		@(INSTALL_PATH=$(PKGROOT)/build make -C \
+				$(RDBTMPDIR)/rocksdb-$(ROCKSDB_VER) install-shared && rm -rf $(RDBTMPDIR))
 
 install-rocksdb-ull-darwin: build-rocksdb install-rocksdb-ull
 install-rocksdb-ull: build-rocksdb do-install-rocksdb-ull
@@ -118,29 +118,29 @@ MCLTMPDIR=$(PKGROOT)
 
 build-mcl: get-mcl make-mcl
 get-mcl:
-        @{ \
-                set -e; \
-                rm -rf $(MCLTMPDIR); \
-                mkdir -p $(MCLTMPDIR); \
-                cd $(MCLTMPDIR); \
-                git clone https://github.com/herumi/mcl.git; \
-        }
+		@{ \
+				set -e; \
+				rm -rf $(MCLTMPDIR); \
+				mkdir -p $(MCLTMPDIR); \
+				cd $(MCLTMPDIR); \
+				git clone https://github.com/herumi/mcl.git; \
+		}
 make-mcl:
-        @{ \
-                set -e; \
-                cd $(MCLTMPDIR)/mcl; \
-                mkdir build;  \
-                cd build;  \
-                cmake ..;  \
-                make;  \
-        }
+		@{ \
+				set -e; \
+				cd $(MCLTMPDIR)/mcl; \
+				mkdir build;  \
+				cd build;  \
+				cmake ..;  \
+				make;  \
+		}
 do-install-mcl-ull:
-        @{ \
-                set -e; \
-                cd $(MCLTMPDIR)/mcl/build; \
-                make install; \
-                ldconfig;  \
-        }
+		@{ \
+				set -e; \
+				cd $(MCLTMPDIR)/mcl/build; \
+				make install; \
+				ldconfig;  \
+		}
 install-mcl-ull: build-mcl do-install-mcl-ull
 
 all: install-mcl-ull install-rocksdb
