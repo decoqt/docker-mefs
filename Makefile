@@ -67,13 +67,13 @@ build-original-rocksdb : get-rocksdb make-rocksdb
 get-rocksdb:
 		@{ \
 				set -e; \
-				ifneq ($(RDBDIR), $(wildcard $(RDBDIR)));\
-					mkdir -p $(RDBDIR); \
-				endif; \
+				sh -c  "if [ ! -d $(RDBDIR) ]; \
+					then mkdir -p $(RDBDIR); \
+				fi"; \
 
-				ifneq ($(RDBDIR)/v$(ROCKSDB_VER).tar.gz, $(RDBDIR)/v$(ROCKSDB_VER).tar.gz) ;\
-					wget $(RDBURL) -P $(RDBTMPDIR); \
-				endif; \
+				sh -c "if [ ! -f $(RDBDIR)/v$(ROCKSDB_VER).tar.gz) ]; \
+					then wget $(RDBURL) -P $(RDBTMPDIR); \
+				fi"; \
 
 				rm -rf $(RDBTMPDIR); \
 				tar xzvf $(RDBDIR)/v$(ROCKSDB_VER).tar.gz -C $(RDBTMPDIR); \
@@ -129,19 +129,17 @@ build-mcl: get-mcl make-mcl
 get-mcl:
 		@{ \
 				set -e; \
-				ifneq ($(MCLDIR), $(MCLDIR))
-					git clone https://github.com/herumi/mcl.git; \
-				endif
+				if [ ! -d $(MCLDIR) ]; \
+					then git clone https://github.com/herumi/mcl.git; \
+				fi;\
 		}
 make-mcl:
 		@{ \
 				set -e; \
-				ifneq ($(MCLTMPDIR), $(MCLTMPDIR)) \
-					mkdir -p $(MCLTMPDIR); \
-				endif \
+				if [ ! -d $(MCLTMPDIR) ]; \
+					then mkdir -p $(MCLTMPDIR); \
+				fi; \
 				cd $(MCLTMPDIR); \
-				mkdir build;  \
-				cd build;  \
 				cmake ..;  \
 				make;  \
 		}
