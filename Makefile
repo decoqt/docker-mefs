@@ -67,14 +67,12 @@ build-original-rocksdb : get-rocksdb make-rocksdb
 get-rocksdb:
 		@{ \
 				set -e; \
-				sh -c  "if [ ! -d $(RDBDIR) ]; \
+				sh -c "if [ ! -d $(RDBDIR) ]; \
 					then mkdir -p $(RDBDIR); \
 				fi"; \
-
 				sh -c "if [ ! -f $(RDBDIR)/v$(ROCKSDB_VER).tar.gz) ]; \
 					then wget $(RDBURL) -P $(RDBDIR); \
 				fi"; \
-
 				rm -rf $(RDBTMPDIR); \
 				tar xzvf $(RDBDIR)/v$(ROCKSDB_VER).tar.gz -C $(RDBTMPDIR); \
 		}
