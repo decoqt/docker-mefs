@@ -72,7 +72,7 @@ get-rocksdb:
 				fi"; \
 
 				sh -c "if [ ! -f $(RDBDIR)/v$(ROCKSDB_VER).tar.gz) ]; \
-					then wget $(RDBURL) -P $(RDBTMPDIR); \
+					then wget $(RDBURL) -P $(RDBDIR); \
 				fi"; \
 
 				rm -rf $(RDBTMPDIR); \
@@ -147,7 +147,7 @@ do-install-mcl-ull:
 		@{ \
 				set -e; \
 				cd $(MCLTMPDIR); \
-				make install; \
+				sudo make install; \
 				ldconfig;  \
 		}
 install-mcl-ull: build-mcl do-install-mcl-ull
