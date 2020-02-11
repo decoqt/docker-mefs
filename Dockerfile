@@ -1,18 +1,12 @@
-FROM ubuntu:18.04
+FROM memoio/mefs-env:latest
 LABEL maintainer yydfjt <yydfjt@hotmail.com>
 
-# install dependence
-RUN apt-get update  \
-    && apt-get install -y -f apt-utils wget git gcc cmake libgmp-dev libssl-dev build-essential flex bison libsnappy-dev zlib1g-dev libbz2-dev liblz4-dev libzstd-dev  \
-    # install mcl rocksdb lib
-    && git clone https://github.com/yydfjt/docker-mefs.git  \ 
-    && cd docker-mefs   \
-    && make \
-    ## get mefs binary
-    && wget -P /usr/local/bin/ http://212.64.28.207:4000/mefs    \
+# get mefs binary
+RUN wget -P /usr/local/bin/ http://212.64.28.207:4000/mefs    \
     && chmod 777 /usr/local/bin/mefs \
     && wget -P /usr/local/bin/ http://212.64.28.207:4000/check_mefs.sh   \
     && chmod 777 /usr/local/bin/check_mefs.sh
 
+EXPOSE 3001
 EXPOSE 4001
 EXPOSE 5001
