@@ -57,7 +57,7 @@ ROCKSDB_MINOR_VER=4
 ROCKSDB_PATCH_VER=6
 ROCKSDB_VER ?= $(ROCKSDB_MAJOR_VER).$(ROCKSDB_MINOR_VER).$(ROCKSDB_PATCH_VER)
 
-RDBTMPDIR=$(PKGROOT)/build/rocksdbtmp
+RDBTMPDIR=$(PKGROOT)/rocksdb/build
 RDBURL=https://github.com/facebook/rocksdb/archive/v$(ROCKSDB_VER).tar.gz
 build-rocksdb: get-rocksdb make-rocksdb
 build-rocksdb-static: get-rocksdb make-rocksdb-static
@@ -114,7 +114,7 @@ install-original-rocksdb: build-original-rocksdb do-install-rocksdb
 # download and install mcl
 ###############################################################################
 
-MCLTMPDIR=$(PKGROOT)/build/mcltmp
+MCLTMPDIR=$(PKGROOT)
 
 build-mcl: get-mcl make-mcl
 get-mcl:
