@@ -123,23 +123,23 @@ get-mcl:
                 rm -rf $(MCLTMPDIR); \
                 mkdir -p $(MCLTMPDIR); \
                 cd $(MCLTMPDIR); \
-				git clone https://github.com/herumi/mcl.git; \
+                git clone https://github.com/herumi/mcl.git; \
         }
 make-mcl:
- 		@{ \
+        @{ \
                 set -e; \
                 cd $(MCLTMPDIR)/mcl; \
-				mkdir build;  \
-    			cd build;  \
-    			cmake ..;  \
-    			make;  \
+                mkdir build;  \
+                cd build;  \
+                cmake ..;  \
+                make;  \
         }
 do-install-mcl-ull:
-		@{ \
+        @{ \
                 set -e; \
                 cd $(MCLTMPDIR)/mcl/build; \
-				make install; \
-    			ldconfig;  \
+                make install; \
+                ldconfig;  \
         }
 install-mcl-ull: build-mcl do-install-mcl-ull
 
