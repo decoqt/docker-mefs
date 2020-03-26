@@ -2,11 +2,11 @@ FROM memoio/mefs-env:latest
 LABEL maintainer yydfjt <yydfjt@hotmail.com>
 
 # get mefs binary
-RUN wget -P /usr/local/bin/ http://212.64.28.207:4000/mefs    \
+RUN wget -P /usr/local/bin/ http://212.64.28.207:4000/mefs-user    \
     && chmod 777 /usr/local/bin/mefs \
-    && wget -P /usr/local/bin/ http://212.64.28.207:4000/check_mefs.sh   \
-    && chmod 777 /usr/local/bin/check_mefs.sh
+    && wget -P /usr/local/bin/ http://212.64.28.207:4000/check_user.sh   \
+    && chmod 777 /usr/local/bin/check_user.sh
 
-EXPOSE 3001
 EXPOSE 4001
 EXPOSE 5001
+EXPOSE 5080
