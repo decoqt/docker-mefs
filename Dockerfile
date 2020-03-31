@@ -1,4 +1,4 @@
-FROM memoio/mefs-env:latest
+FROM memoio/mefs-run:latest
 LABEL maintainer yydfjt <yydfjt@hotmail.com>
 
 # get mefs binary
