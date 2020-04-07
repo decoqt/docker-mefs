@@ -5,8 +5,9 @@ LABEL maintainer yydfjt <yydfjt@hotmail.com>
 RUN wget -P /usr/local/bin/ http://212.64.28.207:4000/mefs-user    \
     && chmod 777 /usr/local/bin/mefs-user \
     && wget -P /usr/local/bin/ http://212.64.28.207:4000/check_user_mcl.sh   \
-    && chmod 777 /usr/local/bin/check_user_mcl.sh \
-    && mkdir -p /app \
+    && chmod 777 /usr/local/bin/check_user_mcl.sh
+
+RUN mkdir -p /app \
     && wget -P /app http://212.64.28.207:4000/userStart.sh   \
     && chmod 777 /app/userStart.sh
 
